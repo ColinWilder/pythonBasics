@@ -1,0 +1,12 @@
+
+Tokens:
+number of tokens:	487
+number of types:	301
+
+Ngrams:
+number of ngrams (non-unique):	3383
+number of ngrams (unique):	3159
+
+Token frequency dictionary:
+
+Ngram frequency dictionary:

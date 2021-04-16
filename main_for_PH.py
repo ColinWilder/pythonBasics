@@ -4,7 +4,10 @@
 
 # foundations
 import urllib.request, urllib.error, urllib.parse, utilities_for_PH
-url = 'http://www.oldbaileyonline.org/browse.jsp?id=t17800628-33&div=t17800628-33'
+# url = 'http://www.oldbaileyonline.org/browse.jsp?id=t17800628-33&div=t17800628-33'
+# url = 'https://tile.loc.gov/storage-services/service/rbc/rbnawsa/n4439/n4439.xml'
+# url = 'https://sourcebooks.fordham.edu/mod/1914Pankhurst.asp'
+url = 'https://archive.org/stream/revolution-1868-02-26/1868-02-26_djvu.txt'
 
 # get info and read from internet
 response = urllib.request.urlopen(url)

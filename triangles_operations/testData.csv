@@ -1,0 +1,12 @@
+Source,Target,Type,Weight
+decretum,canonicus,Undirected,2
+canonicus,corpus,Undirected,2
+canonicus,jus,Undirected,2
+jus,civilis,Undirected,3
+jus,corpus,Undirected,5
+jus,utriusque,Undirected,3
+civilis,judicium,Undirected,2
+judicium,decisio,Undirected,1
+decisio,doctor,Undirected,1
+doctor,utriusque,Undirected,4
+civilis,corpus,Undirected,3

@@ -1,0 +1,54 @@
+logFile 148 for data file
+/home/colin/projects/library_catalogs/textNetworks_operations/data/Marburg_2_libraries_data.csv
+
+This log file was created on 10/20/2017, 21:47:30.
+word distance:	5
+
+Tokens:
+number of tokens:	726
+number of types:	417
+
+Ngrams:
+number of ngrams (non-unique):	2648
+number of ngrams (unique):	2502
+
+Token frequency dictionary:
+
+Ngram frequency dictionary:
+
+logFile 148 for data file
+/home/colin/projects/library_catalogs/textNetworks_operations/data/Marburg_SHG.csv
+
+This log file was created on 10/20/2017, 21:47:30.
+word distance:	5
+
+Tokens:
+number of tokens:	239
+number of types:	174
+
+Ngrams:
+number of ngrams (non-unique):	939
+number of ngrams (unique):	887
+
+Token frequency dictionary:
+
+Ngram frequency dictionary:
+
+logFile 148 for data file
+/home/colin/projects/library_catalogs/textNetworks_operations/data/Marburg_UB.csv
+
+This log file was created on 10/20/2017, 21:47:30.
+word distance:	5
+
+Tokens:
+number of tokens:	487
+number of types:	301
+
+Ngrams:
+number of ngrams (non-unique):	1709
+number of ngrams (unique):	1637
+
+Token frequency dictionary:
+
+Ngram frequency dictionary:
+

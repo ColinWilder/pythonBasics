@@ -1,0 +1,4 @@
+opera - opero
+anno - something weird like adnovo
+neo1 - I think this is being created when the lemmatizer finds ne, itself a product of the tokenizer!
+

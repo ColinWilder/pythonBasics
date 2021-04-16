@@ -44,27 +44,23 @@ wordList = utilities_for_PH.removeStopwords(fullWordList)
 dictionary = utilities_for_PH.wordListToFreqDict(wordList)
 sortedDict = utilities_for_PH.sortFreqDict(dictionary)
 
-'''
-# compile dictionary into string
-# wrap sorted dictionary in HTML and open in browser
-# https://programminghistorian.org/en/lessons/output-data-as-html-file
+# produce an output file (.html) of the word-type frequency dictionary
 outstring = ""
-# Note that I have commented this out, not using the comment symbol (#), but another way (the triple quote). Why? I was tired of it. 
 for s in sortedDict:
     outstring += str(s) # write each dictionary entry
     outstring += "<br />" # adding a line break
-utilities_for_PH.wrapStringInHTMLWindows ("sorted word-type frequency dictionary", url, outstring)
-'''
+utilities_for_PH.wrapStringInHTMLWindows ("word-type-frequency-dictionary", url, outstring)
 
-# create dictionary of n-grams
-lengthOfKWICS = 13
+# TO DO: write the word-type frequency dictionary out as a .csv as well, for easy subsequent analysis, graphing, etc. Keep in mind though that Voyant does this pretty well already and I believe has an export feature, so this is really not something you need to do yourself here. 
+
+# create dictionary of n-grams for KWIC output
+lengthOfKWICS = 13 # so they will be 13-grams!! that is, lists of 13 words, at the central position of which is the keyword itself
 ngrams = utilities_for_PH.getNGrams(fullWordList, lengthOfKWICS) # note we're using the full word list - so it does *not* remove stop words. in this case that is good since we want to see the full sentences in the KWIC printout we're going to make. 
 worddict = utilities_for_PH.nGramsToKWICDict(ngrams)
 
 '''
 # make a KWIC output using the hardcoded KW "black", then wrap with HTML and open in browser
 # This is the functionality shown in PH.
-# Note that I have commented this out, not using the comment symbol (#), but another way (the triple quote). 
 target = 'black'
 outstr = '<pre>'
 if target in worddict:
@@ -80,6 +76,7 @@ utilities_for_PH.wrapStringInHTMLWindows('html-to-kwic', url, outstr)
 '''
 
 # look for each KW in a list of KWs then wrap them in HTML and open
+# TO DO: have the targeted keywords be put into a config file by student/user, rather than hardcoded here. 
 targetListOfKeywords = ['black', 'house', 'evil', 'good', 'man', 'prisoner', 'lady']
 for item in targetListOfKeywords:
     print(item)
