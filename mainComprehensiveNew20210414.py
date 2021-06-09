@@ -20,7 +20,8 @@ import networkx as nx
 # primarySourceTextItself = utilities_for_PH.stripTags(HTML)
 
 # User pastes in a string
-primarySourceTextItself="In the beginning God created the heaven and the earth. And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light. And God saw the light, that it was good: and God divided the light from the darkness. And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day. And God said, Let there be a firmament in the midst of the waters, and let it divide the waters from the waters. And God made the firmament, and divided the waters which were under the firmament from the waters which were above the firmament: and it was so. And God called the firmament Heaven. And the evening and the morning were the second day. And God said, Let the waters under the heaven be gathered together unto one place, and let the dry land appear: and it was so. And God called the dry land Earth; and the gathering together of the waters called he Seas: and God saw that it was good. And God said, Let the earth bring forth grass, the herb yielding seed, and the fruit tree yielding fruit after his kind, whose seed is in itself, upon the earth: and it was so. And the earth brought forth grass, and herb yielding seed after his kind, and the tree yielding fruit, whose seed was in itself, after his kind: and God saw that it was good. And the evening and the morning were the third day. And God said, Let there be lights in the firmament of the heaven to divide the day from the night; and let them be for signs, and for seasons, and for days, and years: and let them be for lights in the firmament of the heaven to give light upon the earth: and it was so."
+# primarySourceTextItself="In the beginning God created the heaven and the earth. And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light. And God saw the light, that it was good: and God divided the light from the darkness. And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day. And God said, Let there be a firmament in the midst of the waters, and let it divide the waters from the waters. And God made the firmament, and divided the waters which were under the firmament from the waters which were above the firmament: and it was so. And God called the firmament Heaven. And the evening and the morning were the second day. And God said, Let the waters under the heaven be gathered together unto one place, and let the dry land appear: and it was so. And God called the dry land Earth; and the gathering together of the waters called he Seas: and God saw that it was good. And God said, Let the earth bring forth grass, the herb yielding seed, and the fruit tree yielding fruit after his kind, whose seed is in itself, upon the earth: and it was so. And the earth brought forth grass, and herb yielding seed after his kind, and the tree yielding fruit, whose seed was in itself, after his kind: and God saw that it was good. And the evening and the morning were the third day. And God said, Let there be lights in the firmament of the heaven to divide the day from the night; and let them be for signs, and for seasons, and for days, and years: and let them be for lights in the firmament of the heaven to give light upon the earth: and it was so."
+primarySourceTextItself="dog cat goat dog cat goat"
 
 # TO DO: User gives name of a file on which to run subsequent code
 
@@ -85,8 +86,9 @@ for item in kSkipBigramsList:
 
 # print to console
 # print(kSkipBigramFrequencyDictionary)
+print("## k-skip bgrams (types) frequencies")
 for key in kSkipBigramFrequencyDictionary:
-    if kSkipBigramFrequencyDictionary[key]>3:
+    if kSkipBigramFrequencyDictionary[key]>1: # only print the big ones
         print(str(key) + ", " + str(kSkipBigramFrequencyDictionary[key]))
 
 # TO DO: export to html in browser tab
@@ -112,6 +114,8 @@ w.writerows(outputList)
 #####################################################################
 ############ send stuff to console, output data to files ############
 #####################################################################
+
+print("## report on numbers")
 
 # console output: tokens
 tokens=sorted(tokens) # sort the big list of tokens
@@ -147,12 +151,12 @@ for kSkipBigram in outputList[1:]:
     if int(kSkipBigram[2]) > 1: # if k-skip bigram appears 2+ times (so it is not quite so insignficant)
         G.add_edge(kSkipBigram[0],kSkipBigram[1]) # insert ngram into networkX graph
         G[kSkipBigram[0]][kSkipBigram[1]]['weight']=kSkipBigram[2]
-        print(kSkipBigram[0],kSkipBigram[1],": ",G[kSkipBigram[0]][kSkipBigram[1]]['weight'])
+        #print(kSkipBigram[0],kSkipBigram[1],": ",G[kSkipBigram[0]][kSkipBigram[1]]['weight'])
 print("added all k-skip bigrams to networkx graph")
 
 
 # report adjacencies
-print("##################### adjacencies #####################")
+print("## adjacencies")
 for node in G.nodes:
 	# print(node) # prints node label
 	# print(G[node]) # prints list of neighbors - in useless form
@@ -161,4 +165,61 @@ for node in G.nodes:
 	print(node+": "+str(list(G.adj[node]))) # it's good to use list function before printing # list function turns native nx dictionary into more human-readable list
 
 
+# find triangles 
+print("## triangles")
+triangles=[] # all the triangles we find go here
+for node in G.nodes:
+	neighbors=list(G.adj[node])
+	if len(neighbors)<2: # too few edges; cannot be part of a triangle; ignoring this one
+		continue # this means jump out of the the if statement, hence go to next item in for loop
+	else: # case in which there are three or more edges/neighbors
+		# print("candidate:",node)
+		for neighbor in neighbors:
+			non=list(G.adj[neighbor]) # non stands for neighbors of neighbors
+			for someNon in non:
+				if someNon in neighbors: # if the neigbor of a neighbor of the original node is itself a neighbor, then you have a triangle
+					triangle=sorted([node,neighbor,someNon]) # triangle should be a list
+					if triangle not in triangles: # check whether we already found this one; if so, don't report and count it again
+						print(node,neighbor,someNon)
+						triangles.append(triangle)
+					# produce list of just those ngrams that are in the triangles - listOfTriangleEdges
+					for i in range(0,3):
+						j=i+1
+						if j==3:
+							j=0 # make it do last vertex with first first
+						triangleEdge=sorted([triangle[i],triangle[j]])
+						wt=int(G[triangle[i]][triangle[j]]['weight'])
+						triangleEdge.append("Undirected")
+						triangleEdge.append(wt)
+						if triangleEdge not in listOfTriangleEdges:
+							listOfTriangleEdges.append(triangleEdge)
+
+# write triangles to CSV output
+csvEdgeFileObject=open("triangles.csv", 'w') # note it's a w flag not a wb flag
+trianglesWriter=csv.writer(csvEdgeFileObject)
+
+# find triangle weights!
+print("## triangle weight")
+outputList=[]
+outputList.append(["triangle","triangle weight"]) # this adds column titles
+triangleWeight=0
+for triangle in triangles:
+	triangleWeight=int(G[triangle[0]][triangle[1]]['weight']) + int(G[triangle[1]][triangle[2]]['weight']) + int(G[triangle[0]][triangle[2]]['weight'])
+	print(triangle[0], triangle[1], triangle[2],": ",str(triangleWeight))
+	L=[int(G[triangle[0]][triangle[1]]['weight']), int(G[triangle[1]][triangle[2]]['weight']), int(G[triangle[0]][triangle[2]]['weight'])]
+	triangleAverageWeight=sum(L) / float(len(L))
+	outputList.append([triangle, triangleWeight, triangleAverageWeight]) # adds information for each triangle
+	# note we added the triangle's average weight on as another columnb
+trianglesWriter.writerows(outputList)
+
+# triangleNgramsWriter.writerows(listOfTriangleEdges)
+
+############################ create regular gephi csv output too
+"""
+for each triangle
+add each of its edges to a list of edges to be graphed/added to a csv file
+any time you encounter a dupe, it should be the same as what was already in there .
+save to output file
+let's not make a new node file since the nodes of the triangles are a subset of all the nodes of the graph
+"""
 
